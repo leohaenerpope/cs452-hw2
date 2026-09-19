@@ -15,6 +15,9 @@ static size_t bitaddr(void *base, void *mem, int e) {
   return addr/blocksize/2;
 }
 
+/**
+ * 
+ */
 extern BBM bbmcreate(size_t size, int e) {
   return bmcreate(mapsize(size,e));
 }

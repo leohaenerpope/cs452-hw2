@@ -4,22 +4,22 @@
 #include "bm.h"
 #include "utils.h"
 
-/*
-  Returns the amount of bits in the bitmap by looking at the bit value amount stored in memory,
-  located sizeof(size_t) behind the actual bitmap memory location
-*/
+/**
+ * Returns the amount of bits in the bitmap by looking at the bit value amount stored in memory,
+ * located sizeof(size_t) behind the actual bitmap memory location
+ */
 static size_t bmbits(BM b) { size_t *bits=b; return *--bits; }
 
-/*
-  Returns byte amount of a bmbits(b) reult
-*/
+/**
+ * Returns byte amount of a bmbits(b) reult
+ */
 static size_t bmbytes(BM b) { return bits2bytes(bmbits(b)); }
 
-/*
-  Determines if an index for a bit in the bitmap is within range
-  of the bitmap itself by using bmbits to grab the actual size of the map,
-  and comparing with the specified index.
-*/
+/**
+ * Determines if an index for a bit in the bitmap is within range
+ * of the bitmap itself by using bmbits to grab the actual size of the map,
+ * and comparing with the specified index.
+ */
 static void ok(BM b, size_t i) {
   if (i<bmbits(b))
     return;
