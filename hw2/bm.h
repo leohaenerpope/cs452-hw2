@@ -14,7 +14,6 @@ typedef void *BM;
  */
 extern BM   bmcreate(size_t bits);
 
-
 /**
  * Frees the bitmap from memory by first moving back to the start of BM memory data (the bit amount of the bitmap)
  * Then frees from memory using mmfree with:
