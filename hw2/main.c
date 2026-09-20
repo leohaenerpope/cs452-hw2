@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <stdio.h>
-#include "utils.h"
 #include "balloc.h"
 
 int main(void)

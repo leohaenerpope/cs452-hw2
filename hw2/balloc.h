@@ -6,7 +6,24 @@
 
 typedef void *Balloc;
 
+/**
+ * Creates and returns a Balloc (which points to a BallocData struct pointer,
+ * which holds:
+ * size_t size;
+    int l;
+    int u;
+    void *mem;
+    FreeList fl;
+    BBM bbm;
+    )
+ * 
+ *  Utilizes the mmalloc function to allocate memory. 
+ */
 extern Balloc bcreate(unsigned int size, int l, int u);
+/**
+ * Frees a BallocData (pointer pointed to by POOL) from memory,
+ * including it's own memory, and free list and buddy bit map.
+ */
 extern void   bdelete(Balloc pool);
 
 extern void *balloc(Balloc pool, unsigned int size);

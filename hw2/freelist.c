@@ -1,7 +1,15 @@
 #include "freelist.h"
 
+
+typedef struct {
+    void **lists;
+} *FreeListData;
+
+
 FreeList freelistcreate(size_t size, int l, int u){
-    return NULL;
+
+    FreeList f;
+    return f;
 }
 void     freelistdelete(FreeList f, int l, int u);
 
