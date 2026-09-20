@@ -44,7 +44,7 @@ Balloc bcreate(unsigned int size, int l, int u){
         b->map[e-l] = bbmcreate(size, e);
     }
 
-    freelistfree(b->fl, b->mem, b->mem, u, l);
+    freelistfree(b->fl, b->mem, b->mem, u, l, u);
     
     return b;
 }
@@ -73,7 +73,7 @@ void *balloc(Balloc pool, unsigned int size) {
     // if entered size is too low for mem specified to handle, handle it, switch to l
     if (e < b->l) {
         e = b->l;
-        printf(stderr, "WARNING: Entered size is too low, memory pool is not specified to handle it. Setting (e) to (l)");
+        fprintf(stderr, "WARNING: Entered size is too low, memory pool is not specified to handle it. Setting (e) to (l)");
 
     }
     
@@ -97,9 +97,16 @@ void  bfree(Balloc pool, void *mem){
     BallocData *b = pool;
 
 
+    freelistfree(b->fl, b->mem, mem, b->e, b->l, b->u)
+
+
 }
 
 unsigned int bsize(Balloc pool, void *mem) {
+    if (pool == NULL || mem == NULL) return 0;
+    BallocData *b = pool;
+    
+
     return 0;
 }
 void bprint(Balloc pool);
