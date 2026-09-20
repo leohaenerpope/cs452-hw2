@@ -1,4 +1,4 @@
-# HW 1 - Queue\<Anon\>
+# HW 2 - Memory Hole
 
 * Author: Leo Haener-Pope
 * Class: CS452 Section #002
