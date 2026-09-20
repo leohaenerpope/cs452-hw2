@@ -2,22 +2,23 @@
 
 
 FreeList freelistcreate(size_t size, int l, int u) {
-    int num_lists = u - l + 1;
-    void **heads = mmalloc(num_lists * sizeof(void*));
-    for (int i = 0; i < num_lists; i++){
+    void **heads = mmalloc((u-l+1) * sizeof(void*));
+    for (int i = 0; i < u-l+1; i++){
         heads[i] = NULL;
     }
     return (FreeList)heads;
 }
 void     freelistdelete(FreeList f, int l, int u) {
-    int num_lists = u - l + 1;
-    mmfree(f, num_lists * sizeof(void*));
+    mmfree(f, (u-l+1) * sizeof(void*));
 }
 
 void *freelistalloc(FreeList f, void *base, int e, int l, int u){
+    if (e < l || e > u) return NULL;
+
     void **lists = (void **) f;
     int target = e - l;
     
+    // if we found the correctly sized block, immediately grab and update head, return the block we got
     if (lists[target] != NULL){
         void *block = lists[target];
         lists[target] = *(void **)block;
@@ -26,28 +27,34 @@ void *freelistalloc(FreeList f, void *base, int e, int l, int u){
 
     int new_e = e+1;
 
+    // go up the free list searching for smallest available block that fits
     while (new_e <= u && lists[new_e-l] == NULL){
         new_e++;
     }
     if (new_e > u) return NULL;
 
+    // grab the found free block and update list head to either next free block (of the current size) or null
     void *block = lists[new_e-l];
     lists[new_e-l] = *(void **)block;
 
+    // now, we will split the block into buddies, keep grabbing the left most 
     while (new_e > e) {
         new_e--;
 
         void *right = (char *) block + e2size(new_e);
+        int spot = new_e - l;
 
-        int split = new_e - l;
-        *(void **)right = lists[split];
-        lists[split] = right;
+        *(void **)right = lists[spot]; // right->next = current list head
+        lists[spot] = right; // current list head = right   
     }
 
+    // finally, return the now non-free memory block spot that we are going to put data into
     return block;
 
 }
-void  freelistfree(FreeList f, void *base, void *mem, int e, int l);
+void  freelistfree(FreeList f, void *base, void *mem, int e, int l) {
+
+}
 
 int freelistsize(FreeList f, void *base, void *mem, int l, int u){
     return 0;

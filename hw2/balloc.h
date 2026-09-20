@@ -10,7 +10,7 @@ typedef void *Balloc;
  * Creates and returns a Balloc (which points to a BallocData struct pointer,
  * which holds:
  * size_t size;
-    int l;
+    int l; -- MUST BE AT LEAST 3 - due to 64 bit memory only letting min
     int u;
     void *mem;
     FreeList fl;
