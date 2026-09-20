@@ -1,6 +1,9 @@
 #ifndef BALLOC_H
 #define BALLOC_H
 
+#include "freelist.h"
+#include "bbm.h"
+
 typedef void *Balloc;
 
 extern Balloc bcreate(unsigned int size, int l, int u);

@@ -2,6 +2,7 @@
 #define FREELIST_H
 
 #include <stdio.h>
+#include "utils.h"
 
 typedef void *FreeList;
 
