@@ -1,3 +1,6 @@
+#include "stdio.h"
+#include "utils.h"
+#include "bbm.h"
 #include "freelist.h"
 
 
@@ -102,6 +105,24 @@ void  freelistfree(FreeList f, void *base, void *mem, int e, int l, int u) {
 }
 
 int freelistsize(FreeList f, void *base, void *mem, int l, int u){
-    return 0;
+    if (f == NULL || base == NULL || mem == NULL) return 0;
+
+    void **lists = (void **) f;
+    size_t offset = (size_t)((char *)mem - (char *)base);
+    
+    for (int e = l; e < u; e++){
+        if (offset % e2size(e) != 0) continue; // we are aligned in the correct e size - little faster
+        
+        void *buddy = baddrinv(base, mem, e);
+        int spot = e-l;
+        void *curr = lists[spot];
+
+        while (curr != NULL){
+            if (curr == buddy) return e; //found buddy, return e
+            curr = *(void**) curr; 
+        }
+    }
+
+    return u;
 }
 void freelistprint(FreeList f, int l, int u);
