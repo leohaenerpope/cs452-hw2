@@ -14,7 +14,7 @@ typedef void *Balloc;
     int u;
     void *mem;
     FreeList fl;
-    BBM bbm;
+    BBM map;
     )
  * 
  *  Utilizes the mmalloc function to allocate memory. 

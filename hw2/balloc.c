@@ -7,7 +7,7 @@ typedef struct {
     int u;
     void *mem;
     FreeList fl;
-    BBM bbm;
+    BBM map;
 } BallocData;
 
 
@@ -26,7 +26,7 @@ Balloc bcreate(unsigned int size, int l, int u){
         return NULL;
     }
     b->fl = freelistcreate(size, l, u);
-    b->bbm = bbmcreate(size, u);
+    b->map = bbmcreate(size, u);
     
     return b;
 }
@@ -34,7 +34,7 @@ Balloc bcreate(unsigned int size, int l, int u){
 void   bdelete(Balloc pool) {
     BallocData *b = pool;
 
-    bbmdelete(b->bbm);
+    bbmdelete(b->map);
     freelistdelete(b->fl, b->l, b->u);
     mmfree(b->mem, b->size);
     mmfree(b, sizeof(BallocData));
@@ -53,14 +53,14 @@ void *balloc(Balloc pool, unsigned int size) {
         return NULL;
     }
 
-    bbmset(b->bbm, b->mem, mem, e);
+    bbmset(b->map, b->mem, mem, e);
 
     return mem;
 }
 void  bfree(Balloc pool, void *mem){
     BallocData *b = pool;
 
-    
+
 }
 
 unsigned int bsize(Balloc pool, void *mem) {
