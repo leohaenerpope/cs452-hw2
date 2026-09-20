@@ -17,7 +17,7 @@ void     freelistdelete(FreeList f, int l, int u) {
 
 void *freelistalloc(FreeList f, void *base, int e, int l, int u){
     if (e < l || e > u) {
-        fprintf(stderr, "ERROR: freelistalloc specified e is incorrect for specified memory.");
+        fprintf(stderr, "ERROR: freelistalloc specified e is incorrect for specified memory.\n");
         return NULL;
     } 
 
@@ -38,7 +38,7 @@ void *freelistalloc(FreeList f, void *base, int e, int l, int u){
         new_e++;
     }
     if (new_e > u) {
-        fprintf(stderr, "ERROR: freelistalloc unable to find correct e inside of memory block");
+        fprintf(stderr, "ERROR: freelistalloc unable to find correct e inside of memory block\n");
         return NULL;
     }
 
@@ -62,8 +62,11 @@ void *freelistalloc(FreeList f, void *base, int e, int l, int u){
 
 }
 void  freelistfree(FreeList f, void *base, void *mem, int e, int l, int u) {
-    if (e < l) {
-        fprintf(stderr, "ERROR: freelistalloc specified e is incorrect for specified memory.");
+    if (f == NULL || mem == NULL) {
+        fprintf(stderr, "ERROR: NULL value given in freelistfree\n");
+        return;
+    } else if (e < l || e > u) {
+        fprintf(stderr, "ERROR: Specified e is incorrect for specified memory. freelistfree\n");
         return;
     }
 

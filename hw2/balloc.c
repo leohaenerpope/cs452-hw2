@@ -74,7 +74,7 @@ void *balloc(Balloc pool, unsigned int size) {
     // if entered size is too low for mem specified to handle, handle it, switch to l
     if (e < b->l) {
         e = b->l;
-        fprintf(stderr, "WARNING: Entered size is too low, memory pool is not specified to handle it. Setting (e) to (l)");
+        fprintf(stderr, "WARNING: Entered size is too low, memory pool is not specified to handle it. Setting (e) to (l)\n");
 
     }
     
@@ -100,12 +100,12 @@ void  bfree(Balloc pool, void *mem){
 
     int bytes = bsize(pool, mem);
     if (bytes == 0) {
-        fprintf(stderr, "ERROR (bfree): unable to obtain size of memory block");
+        fprintf(stderr, "ERROR (bfree): unable to obtain size of memory block\n");
         return;
     }
 
     int e = size2e(bytes);
-    int spot =  - b->l;
+    int spot = e - b->l;
     if (bbmtst(b->map[spot], b->mem, mem, e)) {
         bbmclr(b->map[spot], b->mem, mem, e);
     } else {
