@@ -1,6 +1,8 @@
 #ifndef BALLOC_H
 #define BALLOC_H
 
+#include "utils.h"
+
 typedef void *Balloc;
 
 /**

@@ -1,7 +1,7 @@
+#include "freelist.h"
 #include "stdio.h"
 #include "utils.h"
 #include "bbm.h"
-#include "freelist.h"
 
 
 FreeList freelistcreate(size_t size, int l, int u) {

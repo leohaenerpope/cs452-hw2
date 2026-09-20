@@ -1,7 +1,7 @@
 #ifndef FREELIST_H
 #define FREELIST_H
 
-
+#include <stdlib.h>
 
 typedef void *FreeList;
 
