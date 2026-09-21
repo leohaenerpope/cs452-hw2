@@ -152,5 +152,17 @@ unsigned int bsize(Balloc pool, void *mem) {
 
     return 0;
 }
-void bprint(Balloc pool);
+void bprint(Balloc pool){
+    BallocData *b = pool;
+    int amount = b->u - b->l + 1;
+
+    printf("\nBuddy Bit Map System: \n\n");
+    for (int i = 0; i < amount; i++){
+        bbmprt(b->map[i]);
+    }
+
+    printf("\nFree List: \n\n");
+    freelistprint(b->fl, b->l, b->u);
+
+}
 

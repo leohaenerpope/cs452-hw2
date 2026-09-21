@@ -4,6 +4,7 @@
 
 int main(void)
 {
+    // Some tests for utils
     assert(divup(10, 3) == 4);
     assert(divup(9, 3) == 3);
     assert(divup(0, 3) == 0);

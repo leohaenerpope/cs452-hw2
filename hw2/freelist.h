@@ -51,6 +51,11 @@ extern void  freelistfree(FreeList f, void *base, void *mem, int e, int l, int u
  * Returns U if no buddy found (either buddy not in freelist or block is size u).
  */
 extern int freelistsize(FreeList f, void *base, void *mem, int l, int u);
+/**
+ * Prints out the free list, starting at bottom (l) going to the top (u)
+ * 
+ * Prints out information about the size, then the pointers associated (for each block)
+ */
 extern void freelistprint(FreeList f, int l, int u);
 
 #endif

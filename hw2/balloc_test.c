@@ -46,6 +46,8 @@ int main(void) {
 
     TEST_ASSERT(p1 != p2 && p2 != p3 && p1 != p3, "All different pointer spots");
 
+    bprint(pool);
+
     printf("\nFreeing --------------------------\n");
     bfree(pool, p1);
     bfree(pool, p2);
@@ -65,6 +67,7 @@ int main(void) {
 
     void *a_bad = balloc(pool, 8);
     TEST_ASSERT(a_bad == NULL, "balloc cleanly returned NULL when pool is fully exhausted");
+
 
     bfree(pool, a1);
     bfree(pool, a2);

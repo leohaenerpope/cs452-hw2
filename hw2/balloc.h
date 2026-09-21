@@ -54,6 +54,11 @@ extern void  bfree(Balloc pool, void *mem);
  * Note that this will fail if the bit is set to 0 if both buddies are currently in use in memory.
  */
 extern unsigned int bsize(Balloc pool, void *mem);
+/**
+ * Prints information about the Balloc pool,
+ * including stats about the buddy bit maps and also information about the freelist
+ * into stdout for observational/testing use.
+ */
 extern void bprint(Balloc pool);
 
 #endif

@@ -129,4 +129,26 @@ int freelistsize(FreeList f, void *base, void *mem, int l, int u){
 
     return u;
 }
-void freelistprint(FreeList f, int l, int u);
+void freelistprint(FreeList f, int l, int u) { // may want to use the freelistsize function here?
+    if (f == NULL) return;
+
+    void **lists = (void **) f;
+
+    for (int e = l; e <= u; e++) {
+        int spot = e-l;
+        void *curr = lists[spot];
+
+
+        fprintf(stdout, "Blocks of order %2d (size %8zu): ", e, e2size(e));
+        if (curr == NULL) {
+            fprintf(stdout, " {empty}\n");
+            continue;
+        }
+
+        while (curr != NULL) {
+            fprintf(stdout, " -> %p", curr);
+            curr = *(void **)curr; // next
+        }
+        fprintf(stdout, "\n");
+    }
+}
