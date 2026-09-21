@@ -12,5 +12,8 @@ balloc_test: $(CORE_OBJS) balloc_test.o
 
 .PHONY: all test
 
+clean::
+	rm -f balloc balloc_test *.o
+
 test: balloc_test
 	./balloc_test

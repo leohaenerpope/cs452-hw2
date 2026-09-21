@@ -5,6 +5,9 @@
 
 typedef void *FreeList;
 
+/**
+ * Utilizes maloc to create a 
+ */
 extern FreeList freelistcreate(size_t size, int l, int u);
 extern void     freelistdelete(FreeList f, int l, int u);
 

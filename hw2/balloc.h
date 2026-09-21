@@ -16,7 +16,9 @@ typedef void *Balloc;
     BBM map;
     )
  * 
- *  Utilizes the mmalloc function to allocate memory. 
+ *  If size is not a 2 exponent or it is 
+ * 
+ * Utilizes the mmalloc function to allocate memory. 
  */
 extern Balloc bcreate(unsigned int size, int l, int u);
 /**

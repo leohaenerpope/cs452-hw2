@@ -39,7 +39,7 @@ extern size_t bits2bytes(size_t bits);
  */
 extern size_t e2size(int e);
 /**
- * Returns the e (exponent) value that would be 2^e = size
+ * Returns the e (exponent) value that would be 2^e = size (rounded down)
  */
 extern int size2e(size_t size);
 

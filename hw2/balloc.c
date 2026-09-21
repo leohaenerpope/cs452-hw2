@@ -15,6 +15,17 @@ typedef struct {
 
 
 Balloc bcreate(unsigned int size, int l, int u){
+    if (l < 0 || u < l) return NULL;
+    
+    // If bcreate is passed a size argument that is not a power of two, or larger
+    // than 2u, - make sure it is a power of two and also I just make 
+    int req_u = size2e(size);
+    if (e2size(req_u) < size) req_u++;
+
+    if (req_u > u) u = req_u;
+
+    size = e2size(u);
+
     BallocData *b = mmalloc(sizeof(BallocData));
     if (b == NULL) return NULL;
     b->size = size;

@@ -28,7 +28,7 @@ size_t e2size(int e) {
 int size2e(size_t size) {
     int e = 0;
     while (size > 1){
-        size >>= 1;
+        size /= 2;
         e++;
     }
     return e;
