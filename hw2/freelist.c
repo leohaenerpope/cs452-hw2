@@ -3,6 +3,7 @@
 #include "utils.h"
 #include "bbm.h"
 
+// More documentation inside of freelist.h
 
 FreeList freelistcreate(size_t size, int l, int u) {
     void **heads = mmalloc((u-l+1) * sizeof(void*));
@@ -114,7 +115,7 @@ int freelistsize(FreeList f, void *base, void *mem, int l, int u){
     size_t offset = (size_t)((char *)mem - (char *)base);
     
     for (int e = l; e < u; e++){
-        if (offset % e2size(e) != 0) continue; // we are aligned in the correct e size - little faster
+        if (offset % e2size(e) != 0) continue; // gotta be aligned in the correct e size - a little faster
         
         void *buddy = baddrinv(base, mem, e);
         int spot = e-l;

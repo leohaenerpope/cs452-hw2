@@ -25,21 +25,25 @@ quite comfortable with it, I have used WSL for some classes already).
 
 ## Compiling and Using
 
-Inside of the source directory, run the `make` command.
+Inside of the source `hw2` directory, run the `make` command.
 
-To run main.c, run the `./deq` command.
-
-Currently, main.c is configured to run a program that is helpful to run valgrind with.
-
-To run valgrind with main, use `valgrind ./deq` (make sure that the program has been established with `make` already)
+To run the main program, run the `./balloc` command.
 
 ## Testing
 
-This program's method of testing is just a simple unit test suite inside of the main.c file.
+To test this program, make sure your terminal is located inside the source `hw2` directory.
 
-In order to run specific tests, comment the other tests out, and uncomment the test that you want to run. Results will be displayed in the terminal and should line up for what the test is trying to do (with no unintentional errors).
+If you haven't already, run the `make` command.
 
-Currently, main.c runs a small test that is helpful to use with valgrind. To use valgrind, please see Compiling and Using above.
+Next, run the `./balloc_test` command to run the test suite. Output will be printed in the terminal.
+
+**NOTE**: The test program will run functions that are expected to cause problems within balloc,
+which may print error/warning messages.
+
+Valgrind is recommended to be ran on the test suite as well, using 
+`valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./balloc_test`
+
+
 
 
 ## Results
