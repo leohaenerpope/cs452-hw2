@@ -16,36 +16,27 @@ typedef struct {
 
 Balloc bcreate(unsigned int size, int l, int u){
     if (l < 0 || u < l) return NULL;
-    
-    // If bcreate is passed a size argument that is not a power of two, or larger
-    // than 2u, - make sure it is a power of two and also I just make 
-    int req_u = size2e(size);
-    if (e2size(req_u) < size) req_u++;
 
-    if (req_u > u) u = req_u;
-
-    size = e2size(u);
-
-    BallocData *b = mmalloc(sizeof(BallocData));
+    BallocData *b = mmalloc(sizeof(BallocData)); // BallocData struct
     if (b == NULL) return NULL;
     b->size = size;
     b->l=l;
     b->u=u;
 
-    b->mem = mmalloc(size);
+    b->mem = mmalloc(size); // actual size memory
     if (b->mem == NULL) {
         mmfree(b, sizeof(BallocData));
         return NULL;
     }
 
-    b->fl = freelistcreate(size, l, u);
+    b->fl = freelistcreate(size, l, u); // free list
     if (b->fl == NULL) {
         mmfree(b->mem, size);
         mmfree(b, sizeof(BallocData));
         return NULL;
     }
 
-    b->map = mmalloc((u-l+1) * sizeof(BBM));
+    b->map = mmalloc((u-l+1) * sizeof(BBM)); // bbms
     if (b->map == NULL) {
         freelistdelete(b->fl, l, u);
         mmfree(b->mem, size);
@@ -56,8 +47,24 @@ Balloc bcreate(unsigned int size, int l, int u){
     for (int e = l; e <= u; e++){
         b->map[e-l] = bbmcreate(size, e);
     }
+    
+    size_t offset = 0;
+    size_t max = e2size(u);
 
-    freelistfree(b->fl, b->mem, b->mem, u, l, u);
+    while (offset + max <= size) {  // fill with 2^u blocks
+        void *block = (char *) b->mem + offset;
+        freelistfree(b->fl, b->mem, block, u, l, u);
+        offset += max;
+    }
+
+    for (int e = u-1;  e >= l && offset < size; e--) { // fill remainder with decreasing 2^e blocks
+        size_t block_size = e2size(e);
+        if (block_size + offset <= size) {
+            void *block = (char *) b->mem + offset;
+            freelistfree(b->fl, b->mem, block, e, l, u);
+            offset += block_size;
+        }   
+    }
     
     return b;
 }
@@ -79,15 +86,17 @@ void   bdelete(Balloc pool) {
 void *balloc(Balloc pool, unsigned int size) {
     BallocData *b = pool;
 
-
     int e = size2e(size);
     if (e2size(e) < size) e++;
+
+    if (e > b->u) {
+        return NULL;
+    }
 
     // if entered size is too low for mem specified to handle, handle it, switch to l
     if (e < b->l) {
         e = b->l;
         fprintf(stderr, "WARNING: Entered size is too low, memory pool is not specified to handle it. Setting (e) to (l)\n");
-
     }
     
     // get a block from the free list (that is now not going to be free)
@@ -110,13 +119,13 @@ void  bfree(Balloc pool, void *mem){
     if (pool == NULL || mem == NULL) return;
     BallocData *b = pool;
 
-    int bytes = bsize(pool, mem);
+    int bytes = bsize(pool, mem); // use bsize to get the size of the memory block we are dealing with
     if (bytes == 0) {
         fprintf(stderr, "ERROR (bfree): unable to obtain size of memory block\n");
         return;
     }
 
-    int e = size2e(bytes);
+    int e = size2e(bytes); // update bitmaps
     int spot = e - b->l;
     if (bbmtst(b->map[spot], b->mem, mem, e)) {
         bbmclr(b->map[spot], b->mem, mem, e);
@@ -124,7 +133,7 @@ void  bfree(Balloc pool, void *mem){
         bbmset(b->map[spot], b->mem, mem, e);
     }
 
-    freelistfree(b->fl, b->mem, mem, e, b->l, b->u);
+    freelistfree(b->fl, b->mem, mem, e, b->l, b->u); //update freelist
 }
 
 unsigned int bsize(Balloc pool, void *mem) {

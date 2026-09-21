@@ -39,7 +39,7 @@ void *freelistalloc(FreeList f, void *base, int e, int l, int u){
         new_e++;
     }
     if (new_e > u) {
-        fprintf(stderr, "ERROR: freelistalloc unable to find correct e inside of memory block\n");
+        fprintf(stderr, "ERROR: freelistalloc unable to find correct e inside of memory block. Space is probably limited.\n");
         return NULL;
     }
 
