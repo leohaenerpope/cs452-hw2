@@ -40,7 +40,7 @@ Next, run the `./balloc_test` command to run the test suite. Output will be prin
 **NOTE**: The test program will run functions that are expected to cause problems within balloc,
 which may print error/warning messages.
 
-Valgrind is recommended to be ran on the test suite as well, using 
+Valgrind can be ran on the test suite as well, using 
 `valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./balloc_test`
 
 
