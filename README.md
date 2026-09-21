@@ -6,26 +6,27 @@
 
 ## Overview
 
-This program implements a doubly linked list using C. 
-Void pointers are used and the main deq.c utilizes Node structs for each node in the
-list, as well as Rep anonymous structs to represent the void pointer linked list structure itself.
-In this homework, I implemented the four main functions outlined in deq.h, which are put, get, ith, and rem.
+This program implements a memory management buddy system. It utilizes freelists and buddy bitmap systems
+to track free locations of memory, and also remember where the "buddies" of taken up memory spots are.
 
-## Reflection
+## Reflection/Notes
 
-This was a refreshing experience with using C. I have not utilized C too much, as the only classes I have used it
-with was the 25~ C class as well as the ECE 330 class. Though the syntax can be a little confusing sometimes,
-I enjoy working with pointers and I think C being so low level is very fun to work with. Also, the review of the
-homework that we had on Monday (8/31) was very helpful especially for getting started, as I was definitely a little
-confused to start.
+This was a challenging assignment for me. I took a while to understand what bm and bbm were doing, and even after putting in my comments for them, I still would get slowed down when implementing freelist/balloc because I would kind of forget what was happening with the bit maps. I think I understood the concept of what I was trying to implement decently, however I just struggled with creating it in C, since I don't really have too much experience with it.
 
-I am on windows so getting everything set up for C properly is a little difficult but I was able to do it successfully
-without too much trouble. One thing though is I have to use WSL in order to use valgrind which was unfortunate since I was developing not on WSL at first so maybe for future projects I will just keep with staying on WSL only (since I also feel
-quite comfortable with it, I have used WSL for some classes already).
+I implemented my freelist as a ** C array pointer system and was able to use the *(void**) syntax to kind of go along
+the array (it felt similar to the deq assignment with storing the prev and next). It is important to note that the minimum l would be 3, pointers are 8 bytes in C on 64 bit systems so having data that would be smaller than 8 bytes would probably lead to weird overlaps with the pointer memory locations. Also, note that the buddy system that my program uses will have issues freeing blocks where both buddies have memory allocated, since the bittst will fail when trying to find the size of the buddy to free due to the value of the buddy bitmap location being 0, from both buddies being used.
+
+ I think the thing that gave me the most trouble with this assignment was just trying to figure out where to start with some of the functions, like allocating/freeing, because I would try to think about how to implement it, but I would get stuck thinking about how the freelists/bitmaps would work together. I think I was also confused by some of the functions that bbm provided and how they would correlate with what I was trying to do.
+
+Overall however, this assignment definitely gave me more of an understanding of the buddy system for memory storage. It also definitely helped with my lack of C knowledge, as I now feel more confident with using pointers, especially the ** pointer array things.
 
 ## Compiling and Using
 
 Inside of the source `hw2` directory, run the `make` command.
+
+The main program consists of some smaller tests for freelist and utils,
+and it should also show the funcionality of balloc with the previous homework's
+Deqs (the functions are linked by wrapper.c).
 
 To run the main program, run the `./balloc` command.
 
@@ -51,3 +52,7 @@ Valgrind can be ran on the test suite as well, using
 After creating and finishing all my tests, they fortunately all successfully passed.
 
 Valgrind reported no memory leaks as well.
+
+## Works Cited
+
+Gemini helped me through understanding more of using C with the bitmap/freelist buddy system. Also it helped me write some tests.

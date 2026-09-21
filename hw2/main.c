@@ -2,7 +2,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "balloc.h"
+#include "freelist.h"
 #include "deq.h"
+
+void freelisttest(void) {
+    printf("\n\nFreelist tests\n\n");
+
+    int l = 3;
+    int u = 5;
+    size_t pool_size = e2size(u);
+
+    void *mem = mmalloc(pool_size);
+    assert(mem != NULL);
+
+    FreeList fl = freelistcreate(pool_size, l, u);
+    assert(fl != NULL);
+    freelistfree(fl, mem, mem, u, l, u);
+    printf("initial State (1 block of 32)\n");
+    freelistprint(fl, l, u);
+
+    void *p1 = freelistalloc(fl, mem, 3, l, u);
+    assert(p1 == mem);
+    freelistprint(fl, l, u);
+    printf("\n\n");
+
+    void *p2 = freelistalloc(fl, mem, 3, l, u);
+    assert(p2 == (char *)mem + 8);
+    freelistprint(fl, l, u);
+    printf("\n\n");
+
+    void *p3 = freelistalloc(fl, mem, 4, l, u);
+    assert(p3 == (char *)mem + 16);
+    freelistprint(fl, l, u);
+    printf("\n\n");
+
+    printf("This should fail\n");
+    void *p_fail = freelistalloc(fl, mem, 3, l, u);
+    assert(p_fail == NULL);
+    freelistfree(fl, mem, p1, 3, l, u);
+    freelistprint(fl, l, u);
+    printf("\n\n");
+
+    freelistdelete(fl, l, u);
+    mmfree(mem, pool_size);
+    printf("\nFreelist tests passed\n\n");
+}
+
 
 int main(void)
 {
@@ -21,6 +66,10 @@ int main(void)
     assert(size2e(1024) == 10);
 
     printf("\nutils tests passed in main.c\n");
+
+    freelisttest();
+
+    
 
 
     // deq - copied from main.c from deq assignment
@@ -304,10 +353,14 @@ int main(void)
     deq_head_rem(q2, "a");
     deq_tail_rem(q2, "z");
     char *s2=deq_str(q2,0);
+    printf("Deq program output: (Should be z y y x x)\n\n");
     printf("%s\n",s2);
+    
     free(s2);
+    
 
     deq_del(q2,0);
+    
 
     // // ---------------------------------------------------- 
 
@@ -316,9 +369,13 @@ int main(void)
 
 
     char *s=deq_str(q,0);
+    
     printf("%s\n",s);
+    
     free(s);
 
     deq_del(q,0);
     return 0;
 }
+
+
