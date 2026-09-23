@@ -3,7 +3,15 @@
 #include "freelist.h"
 #include "bbm.h"
 
-
+/**
+ * This is a Balloc structure,
+ * size = bit size of structure
+ * l = lower exponent bound of memory saving
+ * u = upper exponent bound of memory saving
+ * mem = like the base point in memory for the saved data
+ * fl = freelist for the Balloc
+ * map = map of bbms for each e size of the Balloc
+ */
 typedef struct {
     size_t size;
     int l;
@@ -13,6 +21,8 @@ typedef struct {
     BBM *map;
 } BallocData;
 
+
+// Full documentation inside of balloc.h
 
 Balloc bcreate(unsigned int size, int l, int u){
     if (l < 0 || u < l) return NULL;
@@ -104,9 +114,7 @@ void *balloc(Balloc pool, unsigned int size) {
 
     // Toggle the bitmap for the specific buddy pair
     int spot = e - b->l;
-    if (bbmtst(b->map[spot], b->mem, mem, e)) {
-        bbmclr(b->map[spot], b->mem, mem, e);
-    } else {
+    if (!bbmtst(b->map[spot], b->mem, mem, e)) {
         bbmset(b->map[spot], b->mem, mem, e);
     }
 
@@ -116,16 +124,18 @@ void  bfree(Balloc pool, void *mem){
     if (pool == NULL || mem == NULL) return;
     BallocData *b = pool;
 
+    
+    
+
     int bytes = bsize(pool, mem); // use bsize to get the size of the memory block we are dealing with
     if (bytes == 0) return;
 
     int e = size2e(bytes); // update bitmaps
     int spot = e - b->l;
-    if (bbmtst(b->map[spot], b->mem, mem, e)) {
+    if (freelistisbuddyfree(b->fl, b->mem, mem, e, b->l)) {
         bbmclr(b->map[spot], b->mem, mem, e);
-    } else {
-        bbmset(b->map[spot], b->mem, mem, e);
     }
+    
 
     freelistfree(b->fl, b->mem, mem, e, b->l, b->u); //update freelist
 }

@@ -3,6 +3,21 @@
 #include "utils.h"
 #include "bbm.h"
 
+int freelistisbuddyfree(FreeList f, void *base, void *mem, int e, int l) {
+    if (f == NULL || base == NULL || mem == NULL) return 0;
+
+    void **lists = (void **) f;
+    void *buddy = baddrinv(base, mem, e);
+    void *curr = lists[e - l];
+
+    while (curr != NULL) {
+        if (curr == buddy) return 1;
+        curr = *(void **) curr;
+    }
+
+    return 0;
+}
+
 // More documentation inside of freelist.h
 
 FreeList freelistcreate(size_t size, int l, int u) {

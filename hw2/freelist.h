@@ -6,6 +6,13 @@
 typedef void *FreeList;
 
 /**
+ * Helper function that I added,
+ * simply just returns whether or not a buddy is free inside the freelist, given
+ * the mem address of the block we are trying to find the buddy of
+ */
+extern int freelistisbuddyfree(FreeList f, void *base, void *mem, int e, int l);
+
+/**
  * Utilizes mmalloc() to create an array of free list head pointers
  * 
  * (U-L) is the indexing for the array
